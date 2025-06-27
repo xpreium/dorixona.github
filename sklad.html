@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dorilar Sklad Interaktiv - Statistika bilan</title>
+  <style>
+    :root {
+      --primary-color: #2E8B57;
+      --bg-color: #eaf7f0;
+      --text-color: #146d18;
+      --btn-bg: #00b894;
+      --btn-hover: #019d6e;
+      --btn-secondary: #636e72;
+      --btn-secondary-hover: #2d3436;
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: var(--primary-color);
+    }
+    .container {
+      max-width: 1050px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      padding: 20px 30px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 12px 10px;
+      border-bottom: 1px solid #ccc;
+      text-align: center;
+    }
+    th {
+      background-color: var(--primary-color);
+      color: white;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .qty-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-content: center;
+    }
+    .action-btn {
+      background-color: var(--btn-bg);
+      border: none;
+      color: white;
+      font-weight: bold;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 0.3s ease;
+      margin: 0 1px;
+    }
+    .action-btn:hover {
+      background-color: var(--btn-hover);
+    }
+    .action-btn.secondary {
+      background-color: var(--btn-secondary);
+    }
+    .action-btn.secondary:hover {
+      background-color: var(--btn-secondary-hover);
+    }
+    input.qty-input {
+      width: 60px;
+      padding: 5px;
+      text-align: center;
+      font-weight: 600;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    @media (max-width: 1000px) {
+      .container {
+        padding: 10px 2px;
+      }
+      th, td {
+        font-size: 14px;
+        padding: 8px 4px;
+      }
+    }
+    @media (max-width: 700px) {
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+      th {
+        position: static;
+      }
+      tr {
+        margin-bottom: 18px;
+        border-bottom: 2px solid #86dcb7;
+      }
+      td {
+        border: none;
+        padding: 8px 5px;
+      }
+      .qty-controls {
+        flex-direction: column;
+        gap: 4px;
+      }
+      input.qty-input {
+        width: 48px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Dorilar Skladi - Statistika bilan</h1>
+  <div class="container">
+    <table id="drugTable">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Dori nomi</th>
+          <th>Qabul qilingan</th>
+          <th>Sotilgan</th>
+          <th>Qaytarilgan</th>
+          <th>Jami qoldiq</th>
+          <th>Harakatlar</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Dorilar bu yerga JS orqali qo‘shiladi -->
+      </tbody>
+    </table>
+  </div>
+
+<script>
+  // Dorilar ro'yxati va boshlang'ich soni
+  const drugs = [
+    {name: "Amlodipine", received: 120, sold: 0, returned: 0},
+    {name: "Ambroxol", received: 95, sold: 0, returned: 0},
+    {name: "Amoxicillin", received: 140, sold: 0, returned: 0},
+    {name: "Antigrippin", received: 130, sold: 0, returned: 0},
+    {name: "Antiseptic Spray", received: 150, sold: 0, returned: 0},
+    {name: "Aspirin", received: 200, sold: 0, returned: 0},
+    {name: "Bandage", received: 160, sold: 0, returned: 0},
+    {name: "Betadine", received: 170, sold: 0, returned: 0},
+    {name: "Buscopan", received: 90, sold: 0, returned: 0},
+    {name: "Calcium D3", received: 105, sold: 0, returned: 0},
+    // ... istalgancha davom ettiring
+  ];
+
+  // Agar localStorage'da bor bo'lsa, o'shani yuklaymiz, yo'q bo'lsa boshlang'ich qiymat
+  function getStoredDrugs() {
+    const d = localStorage.getItem('dorixona_stat');
+    if (d) return JSON.parse(d);
+    return drugs;
+  }
+  function saveDrugs(list) {
+    localStorage.setItem('dorixona_stat', JSON.stringify(list));
+  }
+
+  let drugsList = getStoredDrugs();
+
+  // Dorilarni alifbo tartibida saralash
+  drugsList.sort((a, b) => a.name.localeCompare(b.name));
+
+  // Jadvalni chizish
+  function renderTable() {
+    const tbody = document.querySelector('#drugTable tbody');
+    tbody.innerHTML = '';
+    drugsList.forEach((drug, index) => {
+      const tr = document.createElement('tr');
+
+      // Index
+      const tdIndex = document.createElement('td');
+      tdIndex.textContent = index + 1;
+      tr.appendChild(tdIndex);
+
+      // Dori nomi
+      const tdName = document.createElement('td');
+      tdName.textContent = drug.name;
+      tr.appendChild(tdName);
+
+      // Qabul qilingan
+      const tdReceived = document.createElement('td');
+      tdReceived.textContent = drug.received;
+      tdReceived.id = `received-${index}`;
+      tr.appendChild(tdReceived);
+
+      // Sotilgan
+      const tdSold = document.createElement('td');
+      tdSold.textContent = drug.sold;
+      tdSold.id = `sold-${index}`;
+      tr.appendChild(tdSold);
+
+      // Qaytarilgan
+      const tdReturned = document.createElement('td');
+      tdReturned.textContent = drug.returned;
+      tdReturned.id = `returned-${index}`;
+      tr.appendChild(tdReturned);
+
+      // Jami qoldiq
+      const tdRemain = document.createElement('td');
+      const remain = drug.received - drug.sold + drug.returned;
+      tdRemain.textContent = remain >= 0 ? remain : 0;
+      tdRemain.id = `remain-${index}`;
+      tr.appendChild(tdRemain);
+
+      // Harakatlar
+      const tdActions = document.createElement('td');
+      tdActions.innerHTML = `
+        <div class="qty-controls">
+          <button class="action-btn" onclick="changeQty(${index}, 'received', 1)">Qabul +</button>
+          <button class="action-btn" onclick="changeQty(${index}, 'received', -1)">Qabul −</button>
+          <button class="action-btn secondary" onclick="changeQty(${index}, 'sold', 1)">Sotildi +</button>
+          <button class="action-btn secondary" onclick="changeQty(${index}, 'sold', -1)">Sotildi −</button>
+          <button class="action-btn" onclick="changeQty(${index}, 'returned', -1)">Qaytar −</button>
+        </div>
+      `;
+      tr.appendChild(tdActions);
+
+      tbody.appendChild(tr);
+    });
+  }
+
+  // Miqdorlarni o'zgartirish
+  window.changeQty = function(index, field, delta) {
+    if (!['received', 'sold', 'returned'].includes(field)) return;
+    drugsList[index][field] += delta;
+    if (drugsList[index][field] < 0) drugsList[index][field] = 0;
+
+    // Sotilgan soni qabul qilingan + qaytarilgan'dan oshmasin
+    if (field === 'sold') {
+      const maxSold = drugsList[index].received + drugsList[index].returned;
+      if (drugsList[index].sold > maxSold) drugsList[index].sold = maxSold;
+    }
+
+    saveDrugs(drugsList);
+    renderTable();
+  };
+
+  // Har safar sahifa yuklanganda chizish
+  renderTable();
+</script>
+
+</body>
+</html>

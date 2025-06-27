@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dorixona.uz</title>
+  <link rel="shortcut icon" href="#" type="image/x-icon">
+  <style>
+    :root {
+      --primary-color: #2E8B57;
+      --accent-color: #00BFFF;
+      --bg-color: #F7F9FC;
+      --text-color: #146d18;
+      --star-color: gold;
+      --star-gray: #ccc;
+      --star-size: 25px;
+      --star-gap: 5px;
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+    }
+    header {
+      background-color: var(--primary-color);
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      flex-wrap: wrap;
+    }
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+    }
+    .search-bar input {
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+      min-width: 250px;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+      font-weight: 500;
+    }
+    .hero {
+      background: linear-gradient(to right, #e1e3e4, #2E8B57);
+      color: white;
+      text-align: center;
+      padding: 60px 20px;
+    }
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: 2.5em;
+    }
+    .hero p {
+      font-size: 1.2em;
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 40px;
+    }
+    @media (max-width: 600px) {
+      .cards {
+        grid-template-columns: repeat(2, 1fr);
+        padding: 20px 5px;
+      }
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: transform 0.2s ease;
+      user-select: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+    }
+    .card h3 {
+      margin: 10px 0 4px 0;
+    }
+    .card-img {
+      width: 110px;
+      height: 110px;
+      object-fit: contain;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      background: #f0f4f2;
+      border: 1px solid #e0e0e0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .card-desc {
+      text-align: center;
+      font-size: 0.97rem;
+      color: #424e4e;
+      margin-bottom: 10px;
+      min-height: 38px;
+    }
+    .card-price {
+      font-size: 1.12rem;
+      font-weight: bold;
+      color: #00b894;
+      margin-bottom: 8px;
+    }
+    .pay-btn {
+      background: var(--accent-color);
+      color: #fff;
+      border: none;
+      padding: 10px 32px;
+      border-radius: 7px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 10px;
+    }
+    .pay-btn:hover {
+      background: #0080b3;
+    }
+    .stars {
+      margin-top: 10px;
+      font-size: var(--star-size);
+      color: var(--star-gray);
+      letter-spacing: var(--star-gap);
+      cursor: pointer;
+      display: inline-block;
+    }
+    .stars span {
+      user-select: none;
+      transition: color 0.2s ease;
+    }
+    .stars .filled {
+      color: var(--star-color);
+    }
+    footer {
+      background-color: var(--primary-color);
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+    @media (max-width: 600px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+      }
+      nav {
+        margin-top: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="logo">Dorixona.uz</div>
+    <div class="search-bar">
+      <input type="text" placeholder="Dori qidiring..." />
+    </div>
+    <nav>
+      <a href="index1.html">Mahsulotlar</a>
+      <a href="./sklad.html">Sklad</a>
+    </nav>
+  </header>
+  <!-- Hero -->
+  <section class="hero">
+    <h1>Online Dorixona</h1>
+    <p>Eng ishonchli dorilar endi sizning uyingizda!</p>
+  </section>
+  <!-- Cards -->
+  <section class="cards" id="cardsContainer">
+    <!-- JS orqali dorilar chiqadi -->
+  </section>
+  <!-- Footer -->
+  <footer>
+    &copy; 2025 Dorixona.uz. Barcha huquqlar himoyalangan.
+  </footer>
+  <script>
+    // Dorilar ro'yxati (20 ta)
+    const drugs = [
+      {
+        name: 'Amlodipine',
+        price: 24000,
+        desc: "Yuqori qon bosimi va yurak ishemik kasalligida ishlatiladi.",
+        img: 'https://www.gnhindia.com/image/cache/data/products/amlodipine-5mg-tablets-500x500.jpg',
+        rating: 4
+      },
+      {
+        name: 'Paracetamol',
+        price: 8000,
+        desc: "Og‘riq va isitma tushiruvchi, bolalar va kattalar uchun.",
+        img: 'dori.png',
+        rating: 5
+      },
+      {
+        name: 'Ibuprofen',
+        price: 16000,
+        desc: "Yengil va o‘rtacha og‘riqlarda hamda yallig‘lanishga qarshi.",
+        img: 'dori1.jpg',
+        rating: 3
+      },
+      {
+        name: 'Vitamin C',
+        price: 12000,
+        desc: "Immunitetni kuchaytirish va antioksidant sifatida qo‘llanadi.",
+        img: 'https://cdn.sanity.io/images/0vv8moc6/dietdoctor/7d7b3d60e2cf6e0de6e3b7f8b151c2b51c8aaabf-1400x933.jpg',
+        rating: 4
+      },
+      {
+        name: 'Amoxicillin',
+        price: 33000,
+        desc: "Turli infeksiyalarda keng qo‘llaniladigan antibiotik.",
+        img: 'https://www.lupin.com/images/product/amoxycillin_capsule.jpg',
+        rating: 4
+      },
+      {
+        name: 'Antigrippin',
+        price: 14500,
+        desc: "Gripp va shamollashda simptomlarni yengillashtiradi.",
+        img: 'https://www.aptekaonline.com.ua/upload/iblock/5e4/5e478e7a5c7a1.jpg',
+        rating: 3
+      },
+      {
+        name: 'Buscopan',
+        price: 22000,
+        desc: "Ichak va oshqozon og‘riqlarida spazmni bartaraf etadi.",
+        img: 'https://www.pharmacydirect.co.nz/media/catalog/product/b/u/buscopan_tablets_100s_front_1.jpg',
+        rating: 4
+      },
+      {
+        name: 'Aspirin',
+        price: 9000,
+        desc: "Yengil og‘riq va isitma uchun, qon suyultiruvchi ta’siri ham bor.",
+        img: 'https://www.bayer.com/sites/default/files/styles/1920x1080/public/2022-05/aspirin-500-tablets.jpg',
+        rating: 5
+      },
+      {
+        name: 'Creon',
+        price: 49000,
+        desc: "Ovqat hazm qilishda ferment sifatida ishlatiladi.",
+        img: 'https://www.medicines.org.uk/emc/files/images/packshots/medicine-packshot-3259.jpg',
+        rating: 4
+      },
+      {
+        name: 'Sudocrem',
+        price: 40000,
+        desc: "Teri yallig‘lanishi va qizarishlarga qarshi krem.",
+        img: 'https://cdn.shopify.com/s/files/1/0330/5201/5947/products/Sudocrem_125g_Tub_-_Front_700x.jpg?v=1612516534',
+        rating: 5
+      },
+      {
+        name: 'Bandage',
+        price: 7000,
+        desc: "Yaralarni bog‘lash va himoya qilish uchun.",
+        img: 'https://5.imimg.com/data5/SELLER/Default/2021/6/KL/FS/TD/32438718/elastic-bandage-500x500.jpg',
+        rating: 4
+      },
+      {
+        name: 'Hand Sanitizer',
+        price: 12000,
+        desc: "Qo‘lni dezinfeksiya qilish uchun gel.",
+        img: 'https://www.boschhealthcare.com/media/catalog/product/cache/1/image/1200x/602f0fa2c1f0d1ba5e241f914e856ff9/b/o/bosch_hand_sanitizer_100ml_front_1.jpg',
+        rating: 4
+      },
+      {
+        name: 'Face Mask',
+        price: 3000,
+        desc: "Virus va changdan himoya qiluvchi tibbiy niqob.",
+        img: 'https://www.masksupplies.com/media/catalog/product/cache/1/image/800x800/9df78eab33525d08d6e5fb8d27136e95/f/a/face-mask-disposable.jpg',
+        rating: 5
+      },
+      {
+        name: 'Gliclazide',
+        price: 28000,
+        desc: "Qandli diabetni davolashda ishlatiladi.",
+        img: 'https://www.chemistwarehouse.com.au/~/media/cw/images/productimages/large/7993.jpg',
+        rating: 4
+      },
+      {
+        name: 'Motilium',
+        price: 34000,
+        desc: "Hazm buzilishida va ko‘ngil aynishini kamaytiradi.",
+        img: 'https://www.thehealthpharmacy.co.uk/wp-content/uploads/2017/03/motilium-10mg-tablets-30s.jpg',
+        rating: 4
+      },
+      {
+        name: 'Loratadine',
+        price: 17000,
+        desc: "Allergiyada burun bitishi va toshmalarda ishlatiladi.",
+        img: 'https://www.nhs.uk/medicines/wp-content/uploads/sites/33/2021/11/loratadine-tablets-300x300.jpg',
+        rating: 3
+      },
+      {
+        name: 'Omeprazol',
+        price: 19000,
+        desc: "Qorinda nordonlik va oshqozon yarasiga qarshi.",
+        img: 'https://www.brooklynpharmacy.co.uk/image/cache/catalog/products/omeprazole-20mg-capsules-28-1-1000x1000.jpg',
+        rating: 5
+      },
+      {
+        name: 'Prednisolone',
+        price: 41000,
+        desc: "Yallig‘lanishga va allergiyaga qarshi gormonal dori.",
+        img: 'https://www.medicines.org.uk/emc/files/images/packshots/medicine-packshot-3215.jpg',
+        rating: 4
+      },
+      {
+        name: 'Vitamin D3',
+        price: 15000,
+        desc: "Suyak va immun tizimini mustahkamlash uchun.",
+        img: 'https://www.vitaminexpress.org/media/image/98/8d/3f/vitamin-d3-1000-iu-capsules-vitality-nutritionals-600x600.jpg',
+        rating: 5
+      },
+      {
+        name: 'Zinc',
+        price: 18000,
+        desc: "Immunitetni ko‘tarish va teri uchun foydali.",
+        img: 'https://cdn.shopify.com/s/files/1/0024/9803/5810/products/Best-Naturals-Zinc-50mg-120-Tabs-Front_grande.jpg?v=1594715614',
+        rating: 4
+      }
+    ];
+    // Cardlarni chiqarish
+    const cardsContainer = document.getElementById('cardsContainer');
+    drugs.forEach((drug, i) => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <img class="card-img" src="${drug.img}" alt="${drug.name}">
+        <h3>${drug.name}</h3>
+        <div class="card-desc">${drug.desc}</div>
+        <div class="card-price">${drug.price.toLocaleString()} so‘m</div>
+        <div class="stars" data-rating="${drug.rating}">
+          <span data-value="1">★</span>
+          <span data-value="2">★</span>
+          <span data-value="3">★</span>
+          <span data-value="4">★</span>
+          <span data-value="5">★</span>
+        </div>
+        <button class="pay-btn">To‘lov qilish</button>
+      `;
+      // To‘lov tugmasi
+      card.querySelector('.pay-btn').onclick = () => {
+        alert(`${drug.name} uchun to‘lov qilinmoqda!\nNarx: ${drug.price.toLocaleString()} so‘m`);
+      };
+      // Yulduzlar
+      const stars = card.querySelectorAll('.stars span');
+      function updateStars(rating) {
+        stars.forEach(star => {
+          const starValue = parseInt(star.getAttribute('data-value'));
+          if (starValue <= rating) star.classList.add('filled');
+          else star.classList.remove('filled');
+        });
+      }
+      updateStars(drug.rating);
+      stars.forEach(star => {
+        star.addEventListener('click', () => {
+          const newRating = parseInt(star.getAttribute('data-value'));
+          updateStars(newRating);
+          card.querySelector('.stars').setAttribute('data-rating', newRating);
+          alert(`${drug.name} uchun baho: ${newRating} yulduz`);
+        });
+      });
+      cardsContainer.appendChild(card);
+    });
+  </script>
+</body>
+</html>
